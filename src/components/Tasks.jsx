@@ -16,7 +16,7 @@ const Task = ({ task ,onTaskUpdate, onTaskDelete}) => {
       completedAt: task.isCompleted ? null : new Date(),
     };
 
-    axios.put(`http://localhost:3000/tasks/${task._id}`, updatedTask)
+    axios.put(`https://server-production-3eb0.up.railway.app/tasks/${task._id}`, updatedTask)
       .then(response => {
         console.log('Task updated:', response.data);
         onTaskUpdate(response.data);
@@ -27,7 +27,7 @@ const Task = ({ task ,onTaskUpdate, onTaskDelete}) => {
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:3000/tasks/${task._id}`)
+    axios.delete(`https://server-production-3eb0.up.railway.app/tasks/${task._id}`)
       .then(response => {
         console.log('Task deleted:', response.data);
         onTaskDelete(task._id);

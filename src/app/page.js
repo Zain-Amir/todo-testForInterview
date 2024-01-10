@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/tasks")
+      .get("https://server-production-3eb0.up.railway.app/tasks")
       .then((response) => {
         console.log("Tasks fetched:", response.data);
         setTasks(response.data);
@@ -54,7 +54,7 @@ export default function Home() {
     };
     // console.log("Adding task:", taskData);
     axios
-      .post("http://localhost:3000/tasks", taskData)
+      .post("https://server-production-3eb0.up.railway.app/tasks", taskData)
       .then((response) => {
         console.log("Task created:", response.data);
         const newTasks = [...tasks, response.data];
@@ -92,7 +92,7 @@ export default function Home() {
             onChange={handleInputChange}
           />
           <button
-            className="p-1 border-1 text-3xl ml-2 mr-2"
+            className="p-1 border-1 hover:bg-black hover:text-white text-3xl ml-2 px-4"
             onClick={handleAddTask}
           >
             +
