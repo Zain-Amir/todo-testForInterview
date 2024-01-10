@@ -5,15 +5,14 @@ import UserIcon from "../assets/images/profile.jpg";
 import Image from "next/image";
 import ListIcon from "../assets/icons/ListIcon";
 import ChevronIcon from "..//assets/icons/ChevronIcon";
-import PlusIcon from "../assets/icons/PlusIcon";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
+
 
 export default function Home() {
   const [isTasksVisible, setTasksVisible] = useState(false);
   const [newTask, setNewTask] = useState("");
   const [tasks, setTasks] = useState([]);
-
   const handleInputChange = (event) => {
     setNewTask(event.target.value);
     // console.log(newTask);
@@ -46,14 +45,14 @@ export default function Home() {
       alert("Task name cannot be empty");
       return;
     }
-
+  
     const taskData = {
       name: newTask,
       createdAt: new Date(),
       completedAt: null,
       isCompleted: false,
     };
-    console.log("Adding task:", taskData);
+    // console.log("Adding task:", taskData);
     axios
       .post("http://localhost:3000/tasks", taskData)
       .then((response) => {
@@ -62,9 +61,11 @@ export default function Home() {
         console.log("New tasks state:", newTasks);
         setTasks(newTasks);
         setNewTask("");
+        alert ("Task added successfully");
       })
       .catch((error) => {
-        console.error("Error creating task:", error);
+        // console.error("Error creating task:", error);
+        alert("Error creating task");
       });
   };
 
@@ -130,14 +131,19 @@ export default function Home() {
         >
           <div className="overflow-hidden">
             <div className="flex-col items-center w-[90vw] md:w-[35vw] h-[30vh] overflow-auto overflow-x-hidden custom-scrollbar">
-              {tasks.map((task) => (
-                <Task
-                  key={task._id}
-                  task={task}
-                  onTaskUpdate={onTaskUpdate}
-                  onTaskDelete={onTaskDelete}
-                />
-              ))}
+              {tasks.length > 0 ? (
+                [...tasks].reverse().map((task) => (
+                  <Task
+                    key={task._id}
+                    task={task}
+                    onTaskUpdate={onTaskUpdate}
+                    onTaskDelete={onTaskDelete}
+                  />
+                ))
+              ) : (
+                <p className="bg-white bg-opacity-75 p-2 rounded-lg">No todos yet</p>
+              )}
+              
             </div>
           </div>
         </CSSTransition>

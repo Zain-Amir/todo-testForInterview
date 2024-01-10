@@ -11,13 +11,18 @@ import axios from 'axios';
 const Task = ({ task ,onTaskUpdate, onTaskDelete}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const handleComplete = () => {
-    axios.put(`http://localhost:3000/tasks/${task._id}`, { isCompleted: true })
+    const updatedTask = {
+      isCompleted: !task.isCompleted,
+      completedAt: task.isCompleted ? null : new Date(),
+    };
+
+    axios.put(`http://localhost:3000/tasks/${task._id}`, updatedTask)
       .then(response => {
-        console.log('Task completed:', response.data);
+        console.log('Task updated:', response.data);
         onTaskUpdate(response.data);
       })
       .catch(error => {
-        console.error('Error completing task:', error);
+        console.error('Error updating task:', error);
       });
   };
 
@@ -63,8 +68,8 @@ const Task = ({ task ,onTaskUpdate, onTaskDelete}) => {
     >
         <div className="flex flex-col text-left w-[90%] mt-4">
             <p>{task.details}</p>
-            <p>Created at: {task.createdAt}</p>
-            <p>Completed at: {task.completedAt}</p>
+            <p>Created at: {new Date(task.createdAt).toLocaleString()}</p>
+            <p>Completed at: {task.completedAt ? new Date(task.completedAt).toLocaleString() : 'Not completed yet'}</p>
             <button className="mt-2 p-1  w-full bg-red-500 bg-opacity-75 text-red-600"
             onClick={handleDelete}>
                 Delete
